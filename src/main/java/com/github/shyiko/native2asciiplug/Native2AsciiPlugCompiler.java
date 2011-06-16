@@ -83,15 +83,15 @@ public class Native2AsciiPlugCompiler implements ClassPostProcessingCompiler {
     public ProcessingItem[] process(CompileContext compileContext, ProcessingItem[] items) {
         ProgressIndicator progressIndicator = compileContext.getProgressIndicator();
         progressIndicator.pushState();
-        progressIndicator.setText2(Native2AsciiBundle.message("native2asciiplug.title"));
-        progressIndicator.setText(Native2AsciiBundle.message("native2asciiplug.start.message"));
+        progressIndicator.setText2(Native2AsciiPlugBundle.message("native2asciiplug.title"));
+        progressIndicator.setText(Native2AsciiPlugBundle.message("native2asciiplug.start.message"));
 
         List<ProcessingItem> successfullyProcessedItems = new ArrayList<ProcessingItem>();
         for (ProcessingItem item : items) {
             Native2AsciiPlugProcessingItem processingItem = (Native2AsciiPlugProcessingItem) item;
             String file = processingItem.getFile().getUrl();
             try {
-                progressIndicator.setText(Native2AsciiBundle.message("native2asciiplug.compile.message", file));
+                progressIndicator.setText(Native2AsciiPlugBundle.message("native2asciiplug.compile.message", file));
                 processingItem.process();
                 successfullyProcessedItems.add(processingItem);
             } catch (IOException ex) {

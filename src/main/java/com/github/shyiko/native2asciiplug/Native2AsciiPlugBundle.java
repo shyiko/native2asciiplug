@@ -27,14 +27,14 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:stanley.shyiko@gmail.com">shyiko</a>
  * @since 03.02.2011
  */
-public class Native2AsciiBundle {
+public class Native2AsciiPlugBundle {
 
     private static Reference<ResourceBundle> bundle;
 
     @NonNls
-    private static final String BUNDLE = "Native2AsciiBundle";
+    private static final String BUNDLE = "Native2AsciiPlugBundle";
 
-    private Native2AsciiBundle() {
+    private Native2AsciiPlugBundle() {
     }
 
     public static String message(@PropertyKey(resourceBundle = BUNDLE) String key, Object... params) {
@@ -42,10 +42,10 @@ public class Native2AsciiBundle {
     }
 
     private static ResourceBundle getBundle() {
-        ResourceBundle bundle = Native2AsciiBundle.bundle != null ? Native2AsciiBundle.bundle.get() : null;
+        ResourceBundle bundle = Native2AsciiPlugBundle.bundle != null ? Native2AsciiPlugBundle.bundle.get() : null;
         if (bundle == null) {
             bundle = ResourceBundle.getBundle(BUNDLE);
-            Native2AsciiBundle.bundle = new SoftReference<ResourceBundle>(bundle);
+            Native2AsciiPlugBundle.bundle = new SoftReference<ResourceBundle>(bundle);
         }
         return bundle;
     }
