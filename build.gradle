@@ -1,0 +1,32 @@
+defaultTasks 'clean', 'zip'
+
+apply plugin: 'java'
+
+def buildNumber = project.property('build.number')
+
+repositories {
+	flatDir name: 'idea/lib', dirs: "${property('idea.home')}/lib"
+}
+
+dependencies {
+    compile ':boot', ':util', ':annotations', ':openapi', ':idea'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Implementation-Title': 'native2asciiplug',
+                'Implementation-Version': buildNumber,
+                'Implementation-Vendor': "Stanley Shyiko",
+                'Built-By': System.properties['user.name'],
+                'Built-Date': new Date().toString()
+        )
+    }
+}
+
+task ('zip', type: Zip, dependsOn: 'jar') {
+    archiveName = "native2asciiplug-${buildNumber}"
+    into('native2asciiplug/lib') {
+        from configurations.archives.allArtifactFiles.files
+    }
+}
