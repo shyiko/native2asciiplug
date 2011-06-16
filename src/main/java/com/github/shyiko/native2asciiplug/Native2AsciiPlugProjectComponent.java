@@ -15,8 +15,8 @@
  */
 package com.github.shyiko.native2asciiplug;
 
+import com.intellij.openapi.compiler.Compiler;
 import com.intellij.openapi.compiler.CompilerManager;
-import com.intellij.openapi.compiler.TranslatingCompiler;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
@@ -25,11 +25,11 @@ import org.jetbrains.annotations.NotNull;
 public class Native2AsciiPlugProjectComponent implements ProjectComponent {
 
     private final CompilerManager compilerManager;
-    private final TranslatingCompiler compiler;
+    private final Compiler compiler;
 
     public Native2AsciiPlugProjectComponent(Project project, CompilerManager compilerManager) {
         this.compilerManager = compilerManager;
-        this.compiler = new Native2AsciiPlugTranslatingCompiler(project);
+        this.compiler = new Native2AsciiPlugCompiler(project);
     }
 
     public void initComponent() {}

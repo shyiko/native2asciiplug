@@ -11,6 +11,7 @@
         1.0
         <ul>
             <li>Intellij IDEA 9+ support</li>
+            <li>Compatibility with Maven plugin</li>
         </ul>
   ]]></change-notes>
 
