@@ -15,19 +15,28 @@
  */
 package com.github.shyiko.native2asciiplug;
 
+import com.intellij.compiler.CompilerWorkspaceConfiguration;
+import com.intellij.openapi.compiler.*;
 import com.intellij.openapi.compiler.Compiler;
-import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
 public class Native2AsciiPlugProjectComponent implements ProjectComponent {
+
+    private static final Logger logger = Logger.getInstance("#" + Native2AsciiPlugProjectComponent.class.getName());
 
     private final CompilerManager compilerManager;
     private final Compiler compiler;
+    private final Project project;
 
     public Native2AsciiPlugProjectComponent(Project project, CompilerManager compilerManager) {
+        this.project = project;
         this.compilerManager = compilerManager;
         this.compiler = new Native2AsciiPlugCompiler(project);
     }
@@ -42,8 +51,35 @@ public class Native2AsciiPlugProjectComponent implements ProjectComponent {
     }
 
     public void projectOpened() {
-        compilerManager.addCompiler(compiler);
+        if (isOutOfProcessBuildTurnedOn()) {
+            injectCompilerForOutOfProcessBuild();
+        } else {
+            compilerManager.addCompiler(compiler);
+        }
         compilerManager.addCompilableFileType(StdFileTypes.PROPERTIES);
+    }
+
+    private boolean isOutOfProcessBuildTurnedOn() {
+        CompilerWorkspaceConfiguration configuration = CompilerWorkspaceConfiguration.getInstance(project);
+        try {
+            Method useOutOfProcessBuild = configuration.getClass().getMethod("useOutOfProcessBuild");
+            return (Boolean) useOutOfProcessBuild.invoke(configuration);
+        } catch (NoSuchMethodException e) {
+            // expected on IDEA releases less than 12
+        } catch (Exception e) {
+            logger.error("Failed to determine whether \"Use external build\" is turned on", e);
+        }
+        return false;
+    }
+
+    private void injectCompilerForOutOfProcessBuild() {
+        try {
+            Class<?> compilerAdapter = Class.forName("com.intellij.compiler.impl.FileProcessingCompilerAdapterTask");
+            Constructor<?> constructor = compilerAdapter.getConstructor(FileProcessingCompiler.class);
+            compilerManager.addAfterTask((CompileTask) constructor.newInstance(compiler));
+        } catch (Exception e) {
+            logger.error("Failed to inject compiler with \"Use external build\" being turned on", e);
+        }
     }
 
     public void projectClosed() {
