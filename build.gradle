@@ -25,7 +25,7 @@ jar {
 }
 
 task ('zip', type: Zip, dependsOn: 'jar') {
-    archiveName = "native2asciiplug-${buildNumber}"
+    archiveName = "native2asciiplug-${buildNumber}.zip"
     into('native2asciiplug/lib') {
         from configurations.archives.allArtifactFiles.files
     }
