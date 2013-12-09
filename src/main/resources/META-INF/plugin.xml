@@ -1,13 +1,18 @@
+<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
 <idea-plugin version="2">
   <name>native2asciiplug</name>
   <description><![CDATA[
       Converts property files with native-encoded characters (characters which are non-Latin 1 and non-Unicode) to Unicode-encoded.
       Processing is being done automatically during compilation phase.
   ]]></description>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <vendor email="stanley.shyiko@gmail.com" url="https://github.com/shyiko/native2asciiplug">Stanley Shyiko</vendor>
   <idea-version since-build="8000"/>
   <change-notes><![CDATA[
+        1.0.2
+        <ul>
+            <li>Intellij IDEA 13 compatibility</li>
+        </ul>
         1.0.1
         <ul>
             <li>Intellij IDEA 12 compatibility</li>

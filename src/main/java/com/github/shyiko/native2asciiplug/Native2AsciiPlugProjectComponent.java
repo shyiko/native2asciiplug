@@ -22,6 +22,7 @@ import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ex.ProjectEx;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
@@ -35,7 +36,7 @@ public class Native2AsciiPlugProjectComponent implements ProjectComponent {
     private final Compiler compiler;
     private final Project project;
 
-    public Native2AsciiPlugProjectComponent(Project project, CompilerManager compilerManager) {
+    public Native2AsciiPlugProjectComponent(ProjectEx project, CompilerManager compilerManager) {
         this.project = project;
         this.compilerManager = compilerManager;
         this.compiler = new Native2AsciiPlugCompiler(project);
