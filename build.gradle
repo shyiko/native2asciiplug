@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    compile ':boot', ':util', ':annotations', ':openapi', ':idea'
+    compile ':boot', ':util', ':annotations', ':openapi', ':idea', ':extensions'
 }
 
 jar {

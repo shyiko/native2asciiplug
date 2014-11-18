@@ -5,10 +5,14 @@
       Converts property files with native-encoded characters (characters which are non-Latin 1 and non-Unicode) to Unicode-encoded.
       Processing is being done automatically during compilation phase.
   ]]></description>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <vendor email="stanley.shyiko@gmail.com" url="https://github.com/shyiko/native2asciiplug">Stanley Shyiko</vendor>
   <idea-version since-build="8000"/>
   <change-notes><![CDATA[
+        1.0.3
+        <ul>
+            <li>Intellij IDEA 14 compatibility</li>
+        </ul>
         1.0.2
         <ul>
             <li>Intellij IDEA 13 compatibility</li>

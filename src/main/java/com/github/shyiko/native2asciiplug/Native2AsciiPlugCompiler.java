@@ -15,7 +15,6 @@
  */
 package com.github.shyiko.native2asciiplug;
 
-import com.intellij.compiler.make.MakeUtil;
 import com.intellij.lang.properties.charset.Native2AsciiCharset;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.*;
@@ -67,7 +66,7 @@ public class Native2AsciiPlugCompiler implements ClassPostProcessingCompiler {
 
     private String getTargetFilePath(CompileContext compileContext, ProjectFileIndex fileIndex, VirtualFile sourceFile) {
         Module module = fileIndex.getModuleForFile(sourceFile);
-        VirtualFile sourceRoot = MakeUtil.getSourceRoot(compileContext, module, sourceFile);
+        VirtualFile sourceRoot = getSourceRoot(compileContext, module, sourceFile);
         if (module == null || sourceRoot == null) {
             return null;
         }
@@ -116,6 +115,23 @@ public class Native2AsciiPlugCompiler implements ClassPostProcessingCompiler {
 
     public ValidityState createValidityState(DataInput in) throws IOException {
         return new  EmptyValidityState();
+    }
+
+    public static VirtualFile getSourceRoot(CompileContext context, Module module, VirtualFile file) {
+        ProjectFileIndex fileIndex = ProjectRootManager.getInstance(module.getProject()).getFileIndex();
+        VirtualFile root = fileIndex.getSourceRootForFile(file);
+        if(root == null) {
+            VirtualFile[] sourceRoots = context.getSourceRoots(module);
+            for(int i = 0; i < sourceRoots.length; ++i) {
+                VirtualFile sourceRoot = sourceRoots[i];
+                if(!fileIndex.isInSourceContent(sourceRoot) &&
+                        VfsUtil.isAncestor(sourceRoot, file, false)) {
+                    root = sourceRoot;
+                    break;
+                }
+            }
+        }
+        return root;
     }
 
     private class Native2AsciiPlugProcessingItem implements ProcessingItem {
